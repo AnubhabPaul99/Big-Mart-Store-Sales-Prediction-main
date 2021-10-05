@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Big Mart Store Sales Prediction</title>
+</head>
+
+<body  style="background-color: khaki;";>
+    <section>
+        <div>
+            <form action="{{ url_for('predict')}}" method="POST" id="myform" onsubmit="return validateForm()">
+                <table align="center" style="width:1000px">
+                    <thead>
+                        <th colspan="2" align="left">
+                            <h1 style="font-size: 35px">Big Mart Store Sales Prediction</h1>
+                        </th>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td colspan="2"><h3 style="font-size: 20px">Item Information</h3></td>
+                        </tr>
+                        <tr>
+                            <td>Item Type:</td>
+                            <td>
+                                <select name="item_type" id="item_type" required="required">
+                                    <option value="6">Fruits and Vegetables</option>
+                                    <option value="1">Bread</option>
+                                    <option value="4">Dairy</option>
+                                    <option value="10">Meat</option>
+                                    <option value="0">Baking Goods</option>
+                                    <option value="13">Snacks</option>
+                                    <option value="3">Canned Foods</option>
+                                    <option value="5">Frozen Foods</option>
+                                    <option value="12">Seafood</option>
+                                    <option value="15">Starchy Foods</option>
+                                    <option value="2">Breakfast</option>
+                                    <option value="14">Soft Drinks</option>
+                                    <option value="7">Hard Drinks</option>
+                                    <option value="9">Households</option>
+                                    <option value="8">Health and Hygiene</option>
+                                    <option value="11">Others</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><br>Item Fat Content:</td>
+                            <td><br>
+                                <select name="item_fat_content" id="item_fat_content" required="required">
+                                    <option value="1">Regular</option>
+                                    <option value="0">Low Fat</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><br>Item Weight:</td>
+                            <td colspan="2"><br>
+                                <div class="formdesign" id="item_weight">
+                                    <input type="text" name="item_weight" placeholder="In grams"
+                                        required="required"><b><span class="formerror" style="color: crimson">
+                                        </span></b>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><br>Item Visibility:</td>
+                            <td colspan="2"><br>
+                                <div class="formdesign" id="item_visibilty">
+                                    <input type="text" name="item_visibilty" placeholder="In %"
+                                        required="required"><b><span class="formerror" style="color: crimson">
+                                        </span></b>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><br>Item MRP:</td>
+                            <td colspan="2"><br>
+                                <div class="formdesign" id="item_mrp">
+                                    <input type="text" name="item_mrp" placeholder="In ₹" required="required"><b><span
+                                            class="formerror" style="color: crimson">
+                                        </span></b>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><h3 style="font-size: 20px">Outlet Information</h3></td>
+                        </tr>
+                        <tr>
+                            <td>Outlet Size:</td>
+                            <td>
+                                <select name="outlet_size" id="outlet_size" required="required">
+                                    <option value="2">Small</option>
+                                    <option value="1">Medium</option>
+                                    <option value="0">High</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><br>Outlet Type:</td>
+                            <td><br>
+                                <select name="outlet_type" id="outlet_type" required="required">
+                                    <option value="0">Grocery Store</option>
+                                    <option value="1">Supermarket Type 1</option>
+                                    <option value="2">Supermarket Type 2</option>
+                                    <option value="3">Supermarket Type 3</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><br>Outlet Location Type:</td>
+                            <td><br>
+                                <select name="outlet_location_type" id="outlet_location_type" required="required">
+                                    <option value="0">Tier 1</option>
+                                    <option value="1">Tier 2</option>
+                                    <option value="2">Tier 3</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><br>Outlet Establishment Year:</td>
+                            <td><br>
+                                <div class="formdesign" id="outlet_est_year"><input type="text" name="outlet_est_year" placeholder="1950 - 2020"
+                                        required="required"><b><span class="formerror"
+                                            style="color: crimson"></span></b>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" align="center"><br>
+                                <button type="submit" form="myform" id="submit">Calculate Item-Outlet Sales</button>
+                                <button type="reset" form="myform" value="Reset">Reset Inputs</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <br>
+                                <h1>{{ prediction_text }}</h1>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <br>
+                                &#169 Anubhab Paul | Sumegh Sen | Suvam Bit | 2021
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </form>
+
+        </div>
+    </section>
+</body>
+
+<script>
+    function clearErrors() {
+        errors = document.getElementsByClassName('formerror');
+        for (let item of errors) {
+            item.innerHTML = "";
+        }
+    }
+
+    function seterror(id, error) {
+        element = document.getElementById(id);
+        element.getElementsByClassName('formerror')[0].innerHTML = error;
+    }
+
+    function validateForm() {
+        var returnval = true;
+        clearErrors();
+
+        var item_weight = document.forms['myform']["item_weight"].value;
+        if (isNaN(parseFloat(item_weight))) {
+            seterror("item_weight", " *Enter numeric value!");
+            returnval = false;
+        }
+        if (parseFloat(item_weight) < 0) {
+            seterror("item_weight", " *Enter positive value!");
+            returnval = false;
+        }
+
+        var item_visibilty = document.forms['myform']["item_visibilty"].value;
+        if (isNaN(parseFloat(item_visibilty))) {
+            seterror("item_visibilty", " *Enter numeric value!");
+            returnval = false;
+        }
+        if (parseFloat(item_visibilty) < 0) {
+            seterror("item_visibilty", " *Enter between 0 - 100!");
+            returnval = false;
+        }
+        if (parseFloat(item_visibilty) > 100) {
+            seterror("item_visibilty", " *Enter between 0 - 100!");
+            returnval = false;
+        }
+
+        var item_mrp = document.forms['myform']["item_mrp"].value;
+        if (isNaN(parseFloat(item_mrp))) {
+            seterror("item_mrp", " *Enter numeric value!");
+            returnval = false;
+        }
+        if (parseFloat(item_mrp) < 0) {
+            seterror("item_mrp", " *Enter positive value!");
+            returnval = false;
+        }
+
+        var outlet_est_year = document.forms['myform']["outlet_est_year"].value;
+        if (isNaN(parseFloat(outlet_est_year))) {
+            seterror("outlet_est_year", " *Enter numeric value!");
+            returnval = false;
+        }
+        if (parseFloat(outlet_est_year) < 1950) {
+            seterror("outlet_est_year", " *Enter between 1950 - 2020!");
+            returnval = false;
+        }
+        if (parseFloat(outlet_est_year) > 2020) {
+            seterror("outlet_est_year", " *Enter between 1950 - 2020!");
+            returnval = false;
+        }
+
+        return returnval;
+
+    }
+</script>
+
+</html>
